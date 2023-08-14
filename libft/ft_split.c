@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yachen <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 14:09:33 by yachen            #+#    #+#             */
-/*   Updated: 2023/05/19 12:05:49 by yachen           ###   ########.fr       */
+/*   Updated: 2023/08/14 13:33:11 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,9 @@ char	**ft_split(char const *s, char c)
 int	main()
 {
 	size_t	i;
-	char	**tab = ft_split("", ' ');
+	char	**tab = ft_split("il:fait:beau", ':');
 	
+	i = 0;
 	while (tab[i])
 		{
 			printf("%s\n", tab[i]);
@@ -96,5 +97,4 @@ int	main()
 			i++;
 		}
 	free(tab);
-}
-*/
+}*/

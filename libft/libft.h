@@ -6,7 +6,7 @@
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 17:36:46 by yachen            #+#    #+#             */
-/*   Updated: 2023/08/08 12:30:39 by yachen           ###   ########.fr       */
+/*   Updated: 2023/08/14 10:16:37 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,5 +76,6 @@ int		ft_printf_str(char *str);
 int		ft_printf_unsi(unsigned int nb);
 int		ft_printf(const char *str, ...);
 int		str_len(char *str);
+void	free_tab(char **tab);
 
 #endif

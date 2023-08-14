@@ -6,7 +6,7 @@
 #    By: yachen <yachen@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/03 17:32:38 by yachen            #+#    #+#              #
-#    Updated: 2023/08/08 12:30:59 by yachen           ###   ########.fr        #
+#    Updated: 2023/08/14 10:16:50 by yachen           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ SRC = ft_atoi.c ft_isalpha.c ft_memchr.c ft_memset.c ft_putstr_fd.c ft_strjoin.c
 	ft_isalnum.c ft_isprint.c ft_memmove.c ft_putnbr_fd.c ft_strdup.c ft_strncmp.c ft_substr.c \
 	ft_strlen.c ft_itoa.c ft_strmapi.c ft_striteri.c get_next_line.c get_next_line_utils.c\
 	ft_printf.c ft_printf_str.c ft_printf_nbr.c ft_printf_hexa.c ft_printf_char.c ft_printf_unsi.c ft_printf_ptr.c \
-	str_len.c \
+	str_len.c free_tab.c\
 
 BONUS_SRC = ft_lstadd_back.c ft_lstadd_front.c ft_lstclear.c ft_lstdelone.c ft_lstiter.c \
 			ft_lstlast.c ft_lstnew.c ft_lstsize.c ft_lstmap.c \

@@ -1,19 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_1.c                                          :+:      :+:    :+:   */
+/*   free_tab.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/13 11:37:57 by yachen            #+#    #+#             */
-/*   Updated: 2023/08/13 13:50:20 by yachen           ###   ########.fr       */
+/*   Created: 2023/08/14 10:08:14 by yachen            #+#    #+#             */
+/*   Updated: 2023/08/14 10:09:52 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "libft.h"
 
-void	ft_error(void)
+void	free_tab(char **tab)
 {
-	perror("!Error ");
-	exit(EXIT_FAILURE);
+	int	i;
+	
+	i = 0;
+	while (tab[i])
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
 }
