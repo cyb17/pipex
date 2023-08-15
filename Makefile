@@ -6,7 +6,7 @@
 #    By: yachen <yachen@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/13 10:56:05 by yachen            #+#    #+#              #
-#    Updated: 2023/08/14 14:22:20 by yachen           ###   ########.fr        #
+#    Updated: 2023/08/15 13:39:45 by yachen           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ CFLAGS = -Wall -Wextra -Werror -g
 
 RM = rm -rf
 
-SRC = main.c processus.c
+SRC = main.c processus.c utils_1.c
 
 OBJ = $(SRC:.c=.o)
 
