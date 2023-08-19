@@ -6,7 +6,7 @@
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 11:20:50 by yachen            #+#    #+#             */
-/*   Updated: 2023/08/15 14:29:06 by yachen           ###   ########.fr       */
+/*   Updated: 2023/08/16 11:53:56 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ void	child_proc(int *f1, char *cmd, int *pipe)
 		error_execve(tab, path, pipe[1], *f1);
 	clean_resource(tab, path, pipe[1], *f1);
 	exit(EXIT_SUCCESS);
-}	
+}
+	
 void	parent_proc(int *f2, char *cmd, int *pipe)
 {
 	char 	**tab;
