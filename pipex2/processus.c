@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   processus.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bing <bing@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 11:03:52 by yachen            #+#    #+#             */
-/*   Updated: 2023/08/19 15:49:28 by yachen           ###   ########.fr       */
+/*   Updated: 2023/08/21 10:00:13 by bing             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,22 +88,16 @@ void	child_procs(char *path, char **cmd_tab, int inf, int outf)
 void	processus(char *path, char **cmd_tab, int inf, int outf)
 {
 	int		i;
-	int		status;
+	int		j;
 	pid_t	*pid;
-
-	i = 0;
-	status = 0;
-	pid = (pid_t *)malloc(sizeof(pid_t) * ft_strlen(cmd_tab));
-	while (cmd_tab[i])
+	
+	i = ft_strlen(cmd_tab);
+	j = 0;
+	pid = (pid_t *)malloc(sizeof(pid_t) * i);
+	while (j < i)
 	{
-		pid[i] = fork();
-		i++;
+		*pid = fork();
+		if (*pid == -1)
+			
 	}
-	if (pid[i] < 0)
-		clsfd_exit_error(inf, ouf, "Error : fork");
-	else if (pid[i] == 0)
-		child_procs(path, cmd_tab, inf, outf);
-	close(inf);
-	close(outf);
-	waitpid(pid[i], &status, 0);
 }

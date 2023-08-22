@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: bing <bing@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/19 10:50:45 by yachen            #+#    #+#             */
-/*   Updated: 2023/08/21 16:35:48 by bing             ###   ########.fr       */
+/*   Created: 2023/08/21 10:30:10 by bing              #+#    #+#             */
+/*   Updated: 2023/08/22 12:18:10 by bing             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,26 @@ int	main(int argc, char **argv, char **env)
 {
 	int		f1;
 	int		f2;
-	char	*path;
-	char	**cmd_tab;
+	char	**path;
+	char	**cmd;
 	
 	if (argc < 5)
-		argc_error();
+		print_error("Error : Please, enter more arguments\n");
 	f1 = open(argv[1], O_RDONLY);
 	if (f1 == -1)
-		ft_perror("Error : open fd failed");
+		ft_perror("Error : open fd failed ");
 	f2 = open(argv[argc - 1], O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (f2 == -1)
 	{
 		close(f1);
-		ft_perror("Error : open fd failed");
+		ft_perror("Error : open fd failed ");
 	}
-	path = find_path(env);
+	path = make_path(find_var_path(env));
 	if (!path)
-		clsfd_exit_error(f1, f2, "Error : path not found");
-	cmd_tab = make_cmd_tab(argc, argv);
-	if (!cmd_tab)
-		clsfd_exit_error(f1, f2, "Error : cmd_tab");		
-	processus(path, cmd_tab, f1, f2);
+		clsfd_exit_error(f1, f2, "Error : PATH not found ");
+	cmd = make_cmd_tab(argc, argv);
+	if (!cmd)
+		clsfd_exit_error(f1, f2, "Error : command shell false ");
+	processus(path, cmd, f1, f2);
 	return (0);
 }
