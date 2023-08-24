@@ -1,34 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lst_error.c                                        :+:      :+:    :+:   */
+/*   ft_printf_hexa.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/19 11:02:39 by yachen            #+#    #+#             */
-/*   Updated: 2023/08/24 11:03:53 by yachen           ###   ########.fr       */
+/*   Created: 2023/05/23 10:19:59 by yachen            #+#    #+#             */
+/*   Updated: 2023/07/31 14:41:05 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "libft.h"
 
-void	ft_perror(char *str)
+int	ft_printf_hexa(unsigned int nbr, int indice)
 {
-	perror(str);
-	exit(EXIT_FAILURE);
-}
+	unsigned long	nb;
+	static int		count;
+	char			*hexa;
 
-void	print_error(char *str)
-{
-	ft_printf("%s", str);
-	exit(EXIT_FAILURE);
-}
-
-void	clsfd_exit_error(int inf, int ouf, char *str)
-{
-	close(inf);
-	close(ouf);
-	if (!str)
-		perror(str);
-	exit(EXIT_FAILURE);
+	nb = nbr;
+	count = 0;
+	hexa = "0123456789abcdef";
+	if (indice == 1)
+		hexa = "0123456789ABCDEF";
+	if (nb >= 16)
+	{
+		ft_printf_hexa(nb / 16, indice);
+	}
+	count += ft_printf_char(hexa[nb % 16]);
+	return (count);
 }

@@ -1,34 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lst_error.c                                        :+:      :+:    :+:   */
+/*   ft_printf_char.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/19 11:02:39 by yachen            #+#    #+#             */
-/*   Updated: 2023/08/24 11:03:53 by yachen           ###   ########.fr       */
+/*   Created: 2023/05/23 10:19:44 by yachen            #+#    #+#             */
+/*   Updated: 2023/07/31 14:40:41 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "libft.h"
 
-void	ft_perror(char *str)
+int	ft_printf_char(char c)
 {
-	perror(str);
-	exit(EXIT_FAILURE);
-}
-
-void	print_error(char *str)
-{
-	ft_printf("%s", str);
-	exit(EXIT_FAILURE);
-}
-
-void	clsfd_exit_error(int inf, int ouf, char *str)
-{
-	close(inf);
-	close(ouf);
-	if (!str)
-		perror(str);
-	exit(EXIT_FAILURE);
+	return (write(1, &c, 1));
 }

@@ -1,34 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lst_error.c                                        :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/19 11:02:39 by yachen            #+#    #+#             */
-/*   Updated: 2023/08/24 11:03:53 by yachen           ###   ########.fr       */
+/*   Created: 2023/05/09 16:25:16 by yachen            #+#    #+#             */
+/*   Updated: 2023/08/05 16:47:24 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "libft.h"
 
-void	ft_perror(char *str)
+size_t	ft_strlen(const char *s)
 {
-	perror(str);
-	exit(EXIT_FAILURE);
-}
+	size_t	i;
 
-void	print_error(char *str)
-{
-	ft_printf("%s", str);
-	exit(EXIT_FAILURE);
-}
-
-void	clsfd_exit_error(int inf, int ouf, char *str)
-{
-	close(inf);
-	close(ouf);
-	if (!str)
-		perror(str);
-	exit(EXIT_FAILURE);
+	i = 0;
+	if (!s)
+		return (0);
+	while (s[i])
+		i++;
+	return (i);
 }

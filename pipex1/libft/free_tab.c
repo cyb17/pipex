@@ -1,34 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lst_error.c                                        :+:      :+:    :+:   */
+/*   free_tab.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/19 11:02:39 by yachen            #+#    #+#             */
-/*   Updated: 2023/08/24 11:03:53 by yachen           ###   ########.fr       */
+/*   Created: 2023/08/14 10:08:14 by yachen            #+#    #+#             */
+/*   Updated: 2023/08/14 10:09:52 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "libft.h"
 
-void	ft_perror(char *str)
+void	free_tab(char **tab)
 {
-	perror(str);
-	exit(EXIT_FAILURE);
-}
-
-void	print_error(char *str)
-{
-	ft_printf("%s", str);
-	exit(EXIT_FAILURE);
-}
-
-void	clsfd_exit_error(int inf, int ouf, char *str)
-{
-	close(inf);
-	close(ouf);
-	if (!str)
-		perror(str);
-	exit(EXIT_FAILURE);
+	int	i;
+	
+	i = 0;
+	while (tab[i])
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
 }

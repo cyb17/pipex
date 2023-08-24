@@ -1,34 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lst_error.c                                        :+:      :+:    :+:   */
+/*   ft_printf_nbr.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/19 11:02:39 by yachen            #+#    #+#             */
-/*   Updated: 2023/08/24 11:03:53 by yachen           ###   ########.fr       */
+/*   Created: 2023/05/23 10:20:09 by yachen            #+#    #+#             */
+/*   Updated: 2023/07/31 14:41:05 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "libft.h"
 
-void	ft_perror(char *str)
+int	ft_printf_nbr(int nb)
 {
-	perror(str);
-	exit(EXIT_FAILURE);
-}
+	int			sign;
+	long		nbr;
+	static int	len;
 
-void	print_error(char *str)
-{
-	ft_printf("%s", str);
-	exit(EXIT_FAILURE);
-}
-
-void	clsfd_exit_error(int inf, int ouf, char *str)
-{
-	close(inf);
-	close(ouf);
-	if (!str)
-		perror(str);
-	exit(EXIT_FAILURE);
+	sign = 0;
+	nbr = nb;
+	len = 0;
+	if (nbr < 0)
+	{
+		ft_printf_char('-');
+		nbr *= -1;
+		sign = 1;
+	}
+	if (nbr > 9)
+		ft_printf_nbr(nbr / 10);
+	len += ft_printf_char(nbr % 10 + 48);
+	return (len + sign);
 }

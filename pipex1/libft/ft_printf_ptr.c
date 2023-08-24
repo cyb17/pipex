@@ -1,34 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lst_error.c                                        :+:      :+:    :+:   */
+/*   ft_printf_ptr.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/19 11:02:39 by yachen            #+#    #+#             */
-/*   Updated: 2023/08/24 11:03:53 by yachen           ###   ########.fr       */
+/*   Created: 2023/05/23 10:20:21 by yachen            #+#    #+#             */
+/*   Updated: 2023/07/31 14:41:05 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "libft.h"
 
-void	ft_perror(char *str)
+static int	ft_ptrhexa(unsigned long long ptr)
 {
-	perror(str);
-	exit(EXIT_FAILURE);
+	static int	count;
+	char		*hexa;
+
+	count = 0;
+	hexa = "0123456789abcdef";
+	if (ptr >= 16)
+		ft_ptrhexa(ptr / 16);
+	count += ft_printf_char(hexa[ptr % 16]);
+	return (count);
 }
 
-void	print_error(char *str)
+int	ft_printf_ptr(unsigned long long ptr)
 {
-	ft_printf("%s", str);
-	exit(EXIT_FAILURE);
-}
+	int	len;
 
-void	clsfd_exit_error(int inf, int ouf, char *str)
-{
-	close(inf);
-	close(ouf);
-	if (!str)
-		perror(str);
-	exit(EXIT_FAILURE);
+	if (ptr == 0)
+	{
+		ft_printf_str("(nil)");
+		return (5);
+	}
+	ft_printf_str("0x");
+	len = ft_ptrhexa(ptr);
+	return (len + 2);
 }

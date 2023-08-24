@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bing <bing@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 11:24:26 by yachen            #+#    #+#             */
-/*   Updated: 2023/08/22 11:04:16 by bing             ###   ########.fr       */
+/*   Updated: 2023/08/24 14:15:35 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,22 +50,48 @@ char	**make_path(char *var_path)
 	return (path);
 }
 
-/* return NULL if (!cmd_tab | strdup failed | argv[i] is empty) */
-char	**make_cmd_tab(int argc, char **argv)
+char	**make_cmd(char *str)
+{
+	char **cmd;
+
+	if (!str)
+		return (NULL);
+	cmd = ft_split(str, ' ');
+	if (!cmd)
+		return (NULL);
+	return (cmd);
+}
+
+void	free_cmd_tab(char ***cmd_tab)
+{
+	int	i;
+	
+	i = 0;
+	if (!cmd_tab)
+		return ;
+	while (cmd_tab[i])
+	{
+		free_tab(cmd_tab[i]);
+		i++;
+	}
+	free(cmd_tab);
+}
+
+char	***make_cmd_tab(int argc, char **argv)
 {
 	int		i;
-	char	**cmd_tab;
+	char	***cmd_tab;
 
-	cmd_tab = (char **)malloc(sizeof(char *) * (argc - 2));
+	cmd_tab = (char ***)malloc(sizeof(char **) * (argc - 2));
 	if (!cmd_tab)
 		return (NULL);
 	i = 0;
 	while (i < argc - 3)
 	{
-		cmd_tab[i] = ft_strdup(argv[i + 2]);
-		if (!cmd_tab[i] || *(cmd_tab[i]) == '\0')
+		cmd_tab[i] = make_cmd(argv[i + 2]);
+		if (!cmd_tab[i])
 		{
-			free_tab(cmd_tab);
+			free_cmd_tab(cmd_tab);
 			return (NULL);
 		}
 		i++;
@@ -96,8 +122,10 @@ void	wait_all_procs(int i, int *pid)
 
 void	clean_ressource(char **path, char **cmd, int inf, int outf)
 {
-	free_tab(path);
-	free_tab(cmd);
+	if (!path)
+		free_tab(path);
+	if (!cmd)
+		free_tab(cmd);
 	close(inf);
 	close(outf);
 }

@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   processus.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bing <bing@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 11:21:53 by bing              #+#    #+#             */
-/*   Updated: 2023/08/22 12:18:01 by bing             ###   ########.fr       */
+/*   Updated: 2023/08/24 13:32:01 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
+/* */
 int	find_execute_cmd(char **path, char **cmd)
 {
 	int	i;
@@ -27,7 +28,7 @@ int	find_execute_cmd(char **path, char **cmd)
 	return (0);
 }
 
-static int	sub_child(char **path, char *cmd_str)
+char	**make_str_pathcmd(char **path, char *cmd_str)
 {
 	int		i;
 	char	*tmp;
@@ -36,26 +37,20 @@ static int	sub_child(char **path, char *cmd_str)
 	i = 0;
 	cmd = ft_split(cmd_str, ' ');
 	if (!cmd)
-		return (-1);	
+		return (NULL);
 	while (path[i])
 	{
 		tmp = path[i];
 		path[i] = ft_strjoin(path[i], cmd[0]);
 		if (!path[i])
-			return (-1);
+			return (NULL);
 		free(tmp);
 		i++;
 	}
-	if (find_execute_cmd(path, cmd) == -1)
-	{
-		free_tab(cmd);
-		return (-1);
-	}
-	free_tab(cmd);
-	return (0);
+	return (cmd);
 }
 
-static void	child_in(char **path, char *cmd, int inf, int *pipefd)
+/*static void	child_in(char **path, char *cmd, int inf, int *pipefd)
 {
 	close(pipefd[0]);
 	if (dup2(inf, STDIN_FILENO) < 0 || dup2(pipefd[1], STDOUT_FILENO) < 0)
@@ -70,7 +65,7 @@ static void	child_in(char **path, char *cmd, int inf, int *pipefd)
 
 static void	child_out(char **path, char *cmd, int outf, int *pipefd)
 {
-	close(pipefd[1]);
+	close(pipefd[1]);-
 	if (dup2(pipefd[0], STDIN_FILENO) < 0 || dup2(outf, STDOUT_FILENO) < 0)
 		ft_perror("Error : dup2 child_out ");
 	if (sub_child(path, cmd) == -1)
@@ -93,9 +88,20 @@ static void	child(char **path, char *cmd, int *pipefd)
 	}
 	close(pipefd[1]);
 	close(pipefd[0]);
+}*/
+
+void	free_pid(char *pid, int nb_child)
+{
+	int	i;
+
+	i = 0;
+	if (!pid)
+		return ;
+	while (i < nb_child)
+		free(pid[i++]);
 }
 
-void	processus(char **path, char **cmd, int inf, int outf)
+/*void	processus(char **path, char **cmd, int inf, int outf)
 {
 	int		pipefd[2];
 	int		nb_child;
@@ -111,7 +117,11 @@ void	processus(char **path, char **cmd, int inf, int outf)
 	{
 		pid[i] = fork();
 		if (pid[i] == -1)
-			clsfd_exit_error(inf, outf, "Error : fork failed ");
+		{
+			free_pid(pid, nb_child);
+			clean_ressource(path, cmd, inf, outf);
+			print_error("Error : fork\n");
+		}
 		else if (pid[i] == 0 && i == 0)
 			child_in(path, cmd[i], inf, pipefd);
 		else if (pid[i] == 0 && i == nb_child - 1)
@@ -119,9 +129,32 @@ void	processus(char **path, char **cmd, int inf, int outf)
 		else if (pid[i] == 0)
 			child(path, cmd[i], pipefd);
 	}
-	/*int j = 0;
-	while (j < nb_child)
-		printf("%d\n", pid[j++]);*/
-	//wait_all_procs(i, pid);
 	clean_ressource(path, cmd, inf, outf);
+}*/
+
+processus_one_cmd(char **path, char **cmd, int inf, int outf)
+{
+	char	**cmd_option;
+
+	cmd_option = make_str_pathcmd(path, cmd[0]);
+	if (!cmd_option || dup2(inf, STDIN_FILENO) < 0
+		|| dup2(outf, STDOUT_FILENO) < 0)
+	{
+		clean_ressource(path, cmd, inf, outf);
+		ft_perror("dup2");
+	}
+	
 }
+
+void	processus(char **path, char **cmd, int inf, int outf)
+{
+	int	nb_child;
+
+	nb_child = 0;
+	nb_child = count_child(cmd);
+	if (nb_child == 1)
+		processus_one_cmd(path, cmd, inf, outf);
+	else
+		processus_mltp_cmd(path, cmd, inf, out);
+}
+

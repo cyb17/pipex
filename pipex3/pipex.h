@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bing <bing@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 11:02:07 by yachen            #+#    #+#             */
-/*   Updated: 2023/08/21 22:51:17 by bing             ###   ########.fr       */
+/*   Updated: 2023/08/24 14:14:50 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@ void	print_error(char *str);
 void	clsfd_exit_error(int inf, int ouf, char *str);
 char	*find_var_path(char **env);
 char	**make_path(char *var_path);
-char	**make_cmd_tab(int argc, char **argv);
+char	**make_cmd(char *str);
+void	free_cmd_tab(char ***cmd_tab);
+char	***make_cmd_tab(int argc, char **argv);
 int		find_execute_cmd(char **path, char **cmd);
 int		count_child(char **cmd);
 void	wait_all_procs(int i, int *pid);
