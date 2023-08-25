@@ -6,11 +6,19 @@
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 15:29:29 by yachen            #+#    #+#             */
-/*   Updated: 2023/08/25 14:26:30 by yachen           ###   ########.fr       */
+/*   Updated: 2023/08/25 15:18:07 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+static void	ft_clean(int f1, int f2, int *pipefd)
+{
+	close(f1);
+	close(f2);
+	close(pipefd[1]);
+	close(pipefd[0]);
+}
 
 void	processus(char **env, char **argv, int f1, int f2)
 {
@@ -36,8 +44,12 @@ void	processus(char **env, char **argv, int f1, int f2)
 		else if (pid[i] == 0 && i == procs - 1)
 			child_2(env, argv[i + 2], f2, pipefd);
 		else if (pid[i] == 0)
+		{
+			ft_printf("test\n");
 			child_3(env, argv[i + 2], pipefd);
+		}
 		i++;
 	}
+	ft_clean(f1, f2, pipefd);
 	wait_all_procs(procs);
 }

@@ -6,7 +6,7 @@
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 14:10:40 by yachen            #+#    #+#             */
-/*   Updated: 2023/08/25 14:11:20 by yachen           ###   ########.fr       */
+/*   Updated: 2023/08/25 14:57:20 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ void	child_3(char **env, char *str, int *pipefd)
 	}
 	if (sub_child(env, str) == -1)
 	{
+		close(pipefd[1]);
 		close(pipefd[0]);
 		perror("Error : command not found ");
 		exit(EXIT_FAILURE);
