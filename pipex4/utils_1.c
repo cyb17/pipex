@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bing <bing@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 11:24:26 by yachen            #+#    #+#             */
-/*   Updated: 2023/08/24 23:14:01 by bing             ###   ########.fr       */
+/*   Updated: 2023/08/25 14:09:07 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,25 +49,6 @@ char	**make_path(char *var_path)
 	}
 	return (path);
 }
-/* ft_strjoin path with cnd name
-return -1 if ft_strjoin failed */
-int	make_path2(char **path, char *str)
-{
-	int		i;
-	char	*tmp;
-
-	i = 0;
-	while (path[i])
-	{
-		tmp = path[i];
-		path[i] = ft_strjoin(path[i], str);
-		if (!path[i])
-			return (-1);
-		free(tmp);
-		i++;
-	}
-	return (0);
-}
 
 /* split cmd and options in char **
 return NULL if (str == NULL | split failed) */
@@ -83,71 +64,27 @@ char	**make_cmd(char *str)
 	return (cmd);
 }
 
-/*void	free_cmd_tab(char ***cmd_tab)
+int	count_procs(char **argv)
 {
-	int	i;
-	
-	i = 0;
-	if (!cmd_tab)
-		return ;
-	while (cmd_tab[i])
-	{
-		free_tab(cmd_tab[i]);
-		i++;
-	}
-	free(cmd_tab);
-}
-
-char	***make_cmd_tab(int argc, char **argv)
-{
-	int		i;
-	char	***cmd_tab;
-
-	cmd_tab = (char ***)malloc(sizeof(char **) * (argc - 2));
-	if (!cmd_tab)
-		return (NULL);
-	i = 0;
-	while (i < argc - 3)
-	{
-		cmd_tab[i] = make_cmd(argv[i + 2]);
-		if (!cmd_tab[i])
-		{
-			free_cmd_tab(cmd_tab);
-			return (NULL);
-		}
-		i++;
-	}
-	cmd_tab[i] = NULL;
-	return (cmd_tab);
-}
-
-int	count_child(char **cmd)
-{
-	int	i;
-
-	if (!cmd)
+	if (!argv)
 		return (0);
-	i = 0;
-	while (cmd[i])
-		i++;
-	return (i);
+	int	procs;
+
+	procs = 2;
+	while (argv[procs + 1])
+		procs++;
+	return (procs - 2);
 }
 
-void	wait_all_procs(int i, int *pid)
+void	wait_all_procs(int procs)
 {
-	int		status;
-	
-	while (--i >= 0)
-		waitpid(pid[i], &status, 0);
+	int status;
+	pid_t pid;
+	int n = 0;
+	while (n < procs)
+	{
+		pid = wait(&status);
+		printf("Fork [%i] terminé avec le code %i\n", pid, status);
+		n++;
+	}
 }
-
-void	clean_ressource(char **path, char **cmd, int inf, int outf)
-{
-	if (!path)
-		free_tab(path);
-	if (!cmd)
-		free_tab(cmd);
-	close(inf);
-	close(outf);
-}
-*/

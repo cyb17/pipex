@@ -6,7 +6,7 @@
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 11:02:39 by yachen            #+#    #+#             */
-/*   Updated: 2023/08/24 11:03:53 by yachen           ###   ########.fr       */
+/*   Updated: 2023/08/25 14:13:31 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,12 @@ void	print_error(char *str)
 	exit(EXIT_FAILURE);
 }
 
-void	clsfd_exit_error(int inf, int ouf, char *str)
+void	clsfd_exit_error(int inf, int ouf, int *pid ,char *str)
 {
 	close(inf);
 	close(ouf);
+	if (!pid)
+		free(pid);
 	if (!str)
 		perror(str);
 	exit(EXIT_FAILURE);
