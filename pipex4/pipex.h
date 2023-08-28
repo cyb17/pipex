@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bing <bing@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 11:02:07 by yachen            #+#    #+#             */
-/*   Updated: 2023/08/25 14:14:29 by yachen           ###   ########.fr       */
+/*   Updated: 2023/08/28 10:39:24 by bing             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int		find_execute_cmd(char **path, char **cmd);
 int		sub_child(char **env, char *str);
 void	child_1(char **env, char *str, int inf, int *pipefd);
 void	child_2(char **env, char *str, int outf, int *pipefd);
-void	child_3(char **env, char *str, int *pipefd);
+void	child_3(char **env, char *str, int *fdin, int *fdout);
 void	processus(char **env, char **argv, int f1, int f2);
 void	wait_all_procs(int procs);
 

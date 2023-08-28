@@ -6,7 +6,7 @@
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 11:24:26 by yachen            #+#    #+#             */
-/*   Updated: 2023/08/25 15:28:02 by yachen           ###   ########.fr       */
+/*   Updated: 2023/08/28 14:58:39 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,29 @@ char	**make_path(char *var_path)
 	return (path);
 }
 
+int	find_execute_cmd(char **path, char **cmd)
+{
+	int		i;
+	char	*tmp;
+
+	i = 0;
+	while (path[i])
+	{
+		tmp = path[i];
+		path[i] = ft_strjoin(path[i], cmd[0]);
+		if (!path[i])
+			return (-1);
+		free(tmp);
+		if (execve(path[i], cmd, NULL) == -1)
+			i++;
+		else
+			break ;
+	}
+	if (path[i] == NULL)
+		return (-1);
+	return (0);
+}
+
 /* split cmd and options in char **
 return NULL if (str == NULL | split failed) */
 char	**make_cmd(char *str)
@@ -62,29 +85,4 @@ char	**make_cmd(char *str)
 	if (!cmd)
 		return (NULL);
 	return (cmd);
-}
-
-int	count_procs(char **argv)
-{
-	if (!argv)
-		return (0);
-	int	procs;
-
-	procs = 2;
-	while (argv[procs + 1])
-		procs++;
-	return (procs - 2);
-}
-
-void	wait_all_procs(int procs)
-{
-	int status;
-	pid_t pid;
-	int n = 0;
-	while (n < procs)
-	{
-		pid = wait(&status);
-		printf("Fork [%i] terminé avec le code %i\n", pid, status);
-		n++;
-	}
 }

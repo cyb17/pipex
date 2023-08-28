@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bing <bing@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 11:02:07 by yachen            #+#    #+#             */
-/*   Updated: 2023/08/15 13:58:05 by yachen           ###   ########.fr       */
+/*   Updated: 2023/08/28 10:39:24 by bing             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,22 @@
 # include <fcntl.h>
 # include <stdio.h>
 # include <sys/wait.h>
+# include <sys/types.h>
 # include "./libft/libft.h"
 
-void	clean_resource(char **tab, char **path, int pipefd, int f);
-void	error_execve(char **tab, char **path, int pipefd, int f);
-void	closefd_and_error(int f1, int f2, char *str);
-void	closepipe_and_error(int pipefd, char *str);
-char	**make_path(void);
+void	ft_perror(char *str);
+void	print_error(char *str);
+void	clsfd_exit_error(int inf, int ouf, int *pid, char *str);
+char	*find_var_path(char **env);
+char	**make_path(char *var_path);
+char	**make_cmd(char *str);
+int		count_procs(char **argv);
 int		find_execute_cmd(char **path, char **cmd);
-void	child_proc(int *f1, char *cmd, int *pipe);
-void	parent_proc(int *f2, char *cmd, int *pipe);
-void	processus(char **argv, int *f1, int *f2);
+int		sub_child(char **env, char *str);
+void	child_1(char **env, char *str, int inf, int *pipefd);
+void	child_2(char **env, char *str, int outf, int *pipefd);
+void	child_3(char **env, char *str, int *fdin, int *fdout);
+void	processus(char **env, char **argv, int f1, int f2);
+void	wait_all_procs(int procs);
 
 #endif
