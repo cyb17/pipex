@@ -6,7 +6,7 @@
 #    By: yachen <yachen@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/13 10:56:05 by yachen            #+#    #+#              #
-#    Updated: 2023/08/25 14:11:58 by yachen           ###   ########.fr        #
+#    Updated: 2023/08/29 09:42:33 by yachen           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ CFLAGS = -Wall -Wextra -Werror -g
 
 RM = rm -rf
 
-SRC = main.c utils_1.c utils_2.c lst_error.c processus.c \
+SRC = pipex.c utils_1.c \
 
 OBJ = $(SRC:.c=.o)
 

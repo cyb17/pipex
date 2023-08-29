@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bing <bing@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 11:02:07 by yachen            #+#    #+#             */
-/*   Updated: 2023/08/28 10:39:24 by bing             ###   ########.fr       */
+/*   Updated: 2023/08/29 16:13:14 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,15 @@
 # include <sys/types.h>
 # include "./libft/libft.h"
 
-void	ft_perror(char *str);
-void	print_error(char *str);
-void	clsfd_exit_error(int inf, int ouf, int *pid, char *str);
-char	*find_var_path(char **env);
-char	**make_path(char *var_path);
+void	cls_pipe(int *fd);
+void	ft_perror(void);
+char	**child_process(char *infile, int *fd, char *argv);
+char	**parent_process(char *outfile, int *fd, char *argv);
+int		tab_strjoin(char **tab, char *str);
 char	**make_cmd(char *str);
-int		count_procs(char **argv);
-int		find_execute_cmd(char **path, char **cmd);
-int		sub_child(char **env, char *str);
-void	child_1(char **env, char *str, int inf, int *pipefd);
-void	child_2(char **env, char *str, int outf, int *pipefd);
-void	child_3(char **env, char *str, int *fdin, int *fdout);
-void	processus(char **env, char **argv, int f1, int f2);
-void	wait_all_procs(int procs);
+char	**find_path(char **env, char **cmd);
+char	*find_execute_path(char **env, char **cmd);
+void	execute_cmd(char *path, char **cmd, int *fd);
+void	sub_main(char **env, char *path, char **cmd, int *fd);
 
 #endif

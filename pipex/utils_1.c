@@ -6,85 +6,127 @@
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:13:38 by yachen            #+#    #+#             */
-/*   Updated: 2023/08/28 18:47:25 by yachen           ###   ########.fr       */
+/*   Updated: 2023/08/29 16:14:25 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-/* find variable PATH in char **env and split it 
-return NULL if don't find or ft_split failed */
-char	**find_path(char **env)
+/* split cmd and options in char **
+return NULL if (str == NULL | split failed) */
+char	**make_cmd(char *str)
 {
+	char **cmd;
+
+	if (!str)
+		return (NULL);
+	cmd = ft_split(str, ' ');
+	if (!cmd)
+		return (NULL);
+	return (cmd);
+}
+
+/* join str to each tab[i] of char **tab 
+return NULL if ft_strjoin failed */
+int	tab_strjoin(char **tab, char *str)
+{
+	int		i;
+	char	*tmp;
+
+	i = 0;
+	while (tab[i])
+	{
+		tmp = tab[i];
+		tab[i] = ft_strjoin(tab[i], str);
+		if (!tab[i])
+		{
+			free_tab(tab);
+			return (-1);
+		}
+		free(tmp);
+		i++;
+	}
+	return (0);
+}
+
+/* find environnement variable PATH, split it, str_joint each path[i]
+with "/cmd"
+return NULL if (PATH don't find | ft_split failed * | tab_join failed*/
+char	**find_path(char **env, char **cmd)
+{
+	int		i;
 	char	**path;
 
-	while (*env && ft_strncmp(*env, "PATH", 4) != 0)
-		env++;
-	if (*env)
+	i = 0;
+	while (env[i] && ft_strncmp(env[i], "PATH", 4) != 0)
+		i++;
+	if (!env[i])
 		return (NULL);
-	path = ft_split(*env, ':');
+	path = ft_split(env[i] +5, ':');
 	if (!path)
+		return (NULL);
+	if ((tab_strjoin(path, "/") == -1)
+		| (tab_strjoin(path, cmd[0]) == -1))
 		return (NULL);
 	return (path);
 }
 
-/* make PATH a char ** with '/' 
-return NULL if (PATH == NULL | ft_split  failed | ft_strjoin failed) */
-char	**make_path(char **var_path, char **cmd)
+/* find path wich have executable file */
+char	*find_execute_path(char **env, char **cmd)
 {
+	char	**cmd_path;
+	char	*path;
 	int		i;
-	char 	*tmp1;
-	char	*tmp2;
-	
-	if (!var_path)
+
+	if (!cmd)
 		return (NULL);
+	cmd_path = find_path(env, cmd);
 	i = 0;
-	while (var_path[i])
+	path = NULL;
+	while (cmd_path[i])
 	{
-		tmp1 = var_path[i];
-		var_path[i] = ft_strjoin(var_path[i], "/");
-		if (!var_path[i])
+		if (access(cmd[0], F_OK | R_OK | X_OK) == 0)
 		{
-			free_tab(var_path);
-			return (NULL);
+			path = ft_strdup(cmd[0]);
+			break ;
 		}
-		free(tmp1);
-		tmp2 = var_path[i];
-		var_path[i] = ft_strjoin(var_path[i], cmd[0]);
-		if (!var_path[i])
+		else if (access(cmd_path[i], F_OK | R_OK | X_OK) == 0)
 		{
-			free_tab(var_path);
-			return (NULL);
+			path = ft_strdup(cmd_path[i]);
+			break ;
 		}
-		free(tmp2);
 		i++;
 	}
-	return (var_path);
+	free_tab(cmd_path);
+	return (path);
 }
 
-int	find_execute_cmd(char **env, char **argv, pid_t pid)
+void	execute_cmd(char *path, char **cmd, int *fd)
 {
-	char	**path;
-	char	**cmd;
-	int		i;
-
-	if (pid == 0)
-		cmd = make_cmd(argv[2]);
-	else
-		cmd = make_cmd(argv[3]);
-	path = make_path(find_var_path(env), cmd);
-	if (!path)
-		return (-1);
-	if (execve(cmd[0], cmd, NULL) == -1)
+	if (!cmd)
 	{
-		while (path[i] && execve(path[i], cmd, NULL) == -1)
-			i++;
-		if (!path[i])
-		{
-			free_tab(path);
-			free_tab(cmd);
-			return (-1);
-		}
+		cls_pipe(fd);
+		perror("Error : cmd malloc failed");
+		return ;
 	}
-	return (0);
+	if (!path)
+	{
+		cls_pipe(fd);
+		perror("Error : command not found ");
+		return ;
+	}
+	execve(path, cmd, NULL);
 }
+
+void	cls_pipe(int *fd)
+{
+	close(fd[0]);
+	close(fd[1]);
+}
+
+void	ft_perror(void)
+{
+	perror("Error : ");
+	exit(EXIT_FAILURE);
+}
+ 
