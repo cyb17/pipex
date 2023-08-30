@@ -6,7 +6,7 @@
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 11:02:07 by yachen            #+#    #+#             */
-/*   Updated: 2023/08/30 11:36:01 by yachen           ###   ########.fr       */
+/*   Updated: 2023/08/30 16:37:09 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include "./libft/libft.h"
 
 void	cls_fd(int *fd);
-void	ft_perror(void);
+void	ft_perror(char *str);
 int		tab_strjoin(char **tab, char *str);
 char	**make_cmd(char *str);
 char	**find_path(char **env, char *cmd);

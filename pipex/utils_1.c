@@ -6,7 +6,7 @@
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:13:38 by yachen            #+#    #+#             */
-/*   Updated: 2023/08/30 13:28:39 by yachen           ###   ########.fr       */
+/*   Updated: 2023/08/30 16:14:02 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,11 @@ void	cls_fd(int *fd)
 	close(fd[1]);
 }
 
-void	ft_perror(void)
+void	ft_perror(char *str)
 {
 	perror("Error");
+	if (str)
+		ft_printf(": %s\n", str);
 	exit(EXIT_FAILURE);
 }
 
@@ -33,8 +35,11 @@ char	**make_cmd(char *str)
 	if (!str)
 		return (NULL);
 	cmd = ft_split(str, ' ');
-	if (!cmd)
-		return (NULL);
+	if (cmd[0] == NULL)
+	{
+		ft_printf("Error: %s: Command not found\n", str);
+		exit(EXIT_FAILURE);
+	}
 	return (cmd);
 }
 
@@ -78,76 +83,11 @@ char	**find_path(char **env, char *cmd)
 	path = ft_split(env[i] +5, ':');
 	if (!path)
 		return (NULL);
-	if (tab_strjoin(path, "/") == -1
-		| tab_strjoin(path, cmd) == -1)
+	if ((tab_strjoin(path, "/") == -1)
+		| (tab_strjoin(path, cmd) == -1))
 	{
 		free_tab(path);
 		return (NULL);
 	}
 	return (path);
-}
-
-/* find executable file's path
-return NULL if not found */
-char	*find_execute_path(char **env, char **cmd)
-{
-	char	**cmd_path;
-	char	*path;
-	int		i;
-
-	cmd_path = find_path(env, cmd[0]);
-	if (!cmd_path)
-		return (NULL);
-	i = 0;
-	path = NULL;
-	while (cmd_path[i])
-	{
-		if (access(cmd[0], F_OK | R_OK | X_OK) == 0)
-		{
-			path = ft_strdup(cmd[0]);
-			break ;
-		}
-		else if (access(cmd_path[i], F_OK | R_OK | X_OK) == 0)
-		{
-			path = ft_strdup(cmd_path[i]);
-			break ;
-		}
-		i++;
-	}
-	free_tab(cmd_path);
-	if (!path)
-		perror("Error");
-	return (path);
-}
-
-int	parsing_cmd(char **env, char *cmd)
-{
-	char	**split_cmd;
-	char	**env_path;
-
-	split_cmd = make_cmd(cmd);
-	if (cmd[0] == '/')
-	{
-		if (access(split_cmd[0], F_OK | R_OK | X_OK) == -1)
-		{
-			free_tab(split_cmd);
-			perror("Error");
-			return (-1);
-		}
-	}
-	else
-	{
-		env_path = find_path(env, split_cmd[0]);
-		while (env_path[i])
-		{
-			if (access(env_path[i], F_OK | R_OK | X_OK) == 0)
-			{
-				free_tab(split_cmd);
-				free_tab(env_path);
-				return(1);
-			}
-			i++;
-		}
-	}
-	return (-1);
 }

@@ -6,7 +6,7 @@
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 14:09:33 by yachen            #+#    #+#             */
-/*   Updated: 2023/08/14 13:33:11 by yachen           ###   ########.fr       */
+/*   Updated: 2023/08/30 15:52:30 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,8 @@ char	**ft_split(char const *s, char c)
 
 int	main()
 {
-	size_t	i;
-	char	**tab = ft_split("il:fait:beau", ':');
+//	size_t	i;
+	char	**tab = ft_split("      ", ' ');
 	
 	i = 0;
 	while (tab[i])
@@ -96,5 +96,7 @@ int	main()
 			free(tab[i]);
 			i++;
 		}
-	free(tab);
+	if (tab[0] == NULL)
+		printf("oui\n");
+	//free(tab);
 }*/
