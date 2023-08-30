@@ -6,7 +6,7 @@
 #    By: yachen <yachen@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/13 10:56:05 by yachen            #+#    #+#              #
-#    Updated: 2023/08/29 09:42:33 by yachen           ###   ########.fr        #
+#    Updated: 2023/08/30 13:11:20 by yachen           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = pipex
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS =  -Wall -Wextra -Werror -g
 
 RM = rm -rf
 

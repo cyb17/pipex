@@ -6,88 +6,99 @@
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:14:45 by yachen            #+#    #+#             */
-/*   Updated: 2023/08/29 16:22:09 by yachen           ###   ########.fr       */
+/*   Updated: 2023/08/30 13:34:33 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char	**child_process(char *infile, int *fd, char *argv)
+void	open_fd(int *fd, char *infile, char *outfile)
 {
-	int	f1;
-	char **cmd;
-	
-	f1 = open(infile, O_RDONLY);
-	if (f1 == -1)
+	fd[0] = open(infile, O_RDONLY);
+	if (fd[0] == -1)
+		ft_perror();
+	fd[1] = open(outfile, O_CREAT | O_RDWR | O_TRUNC, 0644);
+	if (fd[1] == -1)
 	{
-		cls_pipe(fd);
+		close(fd[0]);
 		ft_perror();
 	}
-	if (dup2(f1, STDIN_FILENO) < 0 || dup2(fd[1], STDOUT_FILENO) < 0)
-	{
-		cls_pipe(fd);
-		close(f1);
-		ft_perror();
-	}
-	cmd = make_cmd(argv);
-	cls_pipe(fd);
-	return (cmd);
 }
 
-char	**parent_process(char *outfile, int *fd, char *argv)
+void	sub_child1(int *fd, int *pipefd, char **env, char *cmd_str)
 {
-	int		f2;
+	char	*path;
 	char	**cmd;
-
-	f2 = open(outfile, O_CREAT | O_RDWR | O_TRUNC, 0644);
-	if (f2 == -1)
+		
+	if (dup2(fd[0], STDIN_FILENO) < 0 || dup2(pipefd[1], STDOUT_FILENO) < 0)
 	{
-		cls_pipe(fd);
+		cls_fd(fd);
+		cls_fd(pipefd);
 		ft_perror();
 	}
-	if (dup2(fd[0], STDIN_FILENO) < 0 || dup2(f2, STDOUT_FILENO) < 0)
-	{
-		cls_pipe(fd);
-		close(f2);
-		ft_perror();
-	}
-	cmd = make_cmd(argv);
-	cls_pipe(fd);
-	return (cmd);
+	cmd = make_cmd(cmd_str);
+	path = find_execute_path(env, cmd);
+	close(fd[0]);
+	close(pipefd[0]);
+	if (execve(path, cmd, NULL) == -1)
+		perror("Error");
 }
 
-void	ft_clean(char *path, char **cmd, int *fd)
+void	sub_child2(int *fd, int *pipefd, char **env, char *cmd_str)
 {
-	free_tab(cmd);
-	free(path);
-	cls_pipe(fd);
+	char	*path;
+	char	**cmd;
+			
+	if (dup2(pipefd[0], STDIN_FILENO) < 0/* || dup2(fd[1], STDOUT_FILENO) < 0*/)
+	{
+		cls_fd(fd);
+		cls_fd(pipefd);
+		ft_perror();
+	}
+	cmd = make_cmd(cmd_str);
+	path = find_execute_path(env, cmd);
+	close(fd[1]);
+	close(pipefd[1]);
+	if (execve(path, cmd, NULL) == -1)
+		perror("Error");
+}
+
+void	child_process(char **env, char **argv)
+{
+	int		pipefd[2];
+	int		fd[2];
+	pid_t	pid;
+	
+	open_fd(fd, argv[1], argv[4]);
+	if ((pipe(pipefd)) == -1)
+		ft_perror();
+	pid = fork();
+	if (pid == -1)
+	{
+		cls_fd(pipefd);
+		cls_fd(fd);
+		ft_perror();
+	}
+	else if (pid == 0)
+		sub_child1(fd, pipefd, env, argv[2]);
+	else
+		sub_child2(fd, pipefd, env, argv[3]);
 }
 
 int	main(int argc, char **argv, char **env)
 {
-	int		fd[2];
 	pid_t	pid;
 	int		status;
-	char	**cmd;
-	char	*path;
-
+	
 	if (argc == 5)
 	{
-		if(pipe(fd) == -1)
-			ft_perror();
 		pid = fork();
 		if (pid == -1)
 			ft_perror();
 		else if (pid == 0)
-			cmd = child_process(argv[1], fd, argv[2]);
+			child_process(env, argv);
 		else
-		{
 			waitpid(pid, &status, 0);
-			cmd = parent_process(argv[4], fd, argv[3]);
-		}
-		path = find_execute_path(env, cmd);
-		execute_cmd(path, cmd, fd);
-		ft_clean(path, cmd, fd);
 	}
 	else
 		ft_printf("The number of parameters is not valid");

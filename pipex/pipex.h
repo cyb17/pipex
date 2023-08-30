@@ -6,7 +6,7 @@
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 11:02:07 by yachen            #+#    #+#             */
-/*   Updated: 2023/08/29 16:13:14 by yachen           ###   ########.fr       */
+/*   Updated: 2023/08/30 11:36:01 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,16 @@
 # include <sys/types.h>
 # include "./libft/libft.h"
 
-void	cls_pipe(int *fd);
+void	cls_fd(int *fd);
 void	ft_perror(void);
-char	**child_process(char *infile, int *fd, char *argv);
-char	**parent_process(char *outfile, int *fd, char *argv);
 int		tab_strjoin(char **tab, char *str);
 char	**make_cmd(char *str);
-char	**find_path(char **env, char **cmd);
+char	**find_path(char **env, char *cmd);
 char	*find_execute_path(char **env, char **cmd);
 void	execute_cmd(char *path, char **cmd, int *fd);
-void	sub_main(char **env, char *path, char **cmd, int *fd);
+void	open_fd(int *fd, char *infile, char *outfile);
+void	sub_child1(int *fd, int *pipefd, char **env, char *cmd_str);
+void	sub_child2(int *fd, int *pipefd, char **env, char *cmd_str);
+void	child_process(char **env, char **argv);
 
 #endif
