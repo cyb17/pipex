@@ -6,37 +6,24 @@
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:13:38 by yachen            #+#    #+#             */
-/*   Updated: 2023/08/30 16:14:02 by yachen           ###   ########.fr       */
+/*   Updated: 2023/08/31 12:29:22 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	cls_fd(int *fd)
-{
-	close(fd[0]);
-	close(fd[1]);
-}
-
-void	ft_perror(char *str)
-{
-	perror("Error");
-	if (str)
-		ft_printf(": %s\n", str);
-	exit(EXIT_FAILURE);
-}
-
 /* split cmd and options in char **
 return NULL if (str == NULL | split failed) */
 char	**make_cmd(char *str)
 {
-	char **cmd;
+	char	**cmd;
 
 	if (!str)
 		return (NULL);
 	cmd = ft_split(str, ' ');
 	if (cmd[0] == NULL)
 	{
+		free_tab(cmd);
 		ft_printf("Error: %s: Command not found\n", str);
 		exit(EXIT_FAILURE);
 	}
@@ -89,5 +76,46 @@ char	**find_path(char **env, char *cmd)
 		free_tab(path);
 		return (NULL);
 	}
+	return (path);
+}
+
+static char	*sub_parsing_cmd(char **split_cmd)
+{
+	char	*path;
+
+	path = NULL;
+	if (access(split_cmd[0], F_OK | R_OK | X_OK) == -1)
+		ft_printf("Error: %s: no such file or directory\n", split_cmd[0]);
+	else
+		path = ft_strdup(split_cmd[0]);
+	free_tab(split_cmd);
+	return (path);
+}
+
+/* check cmd and find it path, return NULL if there is a pb */
+char	*parsing_cmd(char **env, char *cmd)
+{
+	char	**split_cmd;
+	char	**env_path;
+	char	*path;
+	int		i;
+
+	split_cmd = make_cmd(cmd);
+	path = NULL;
+	if (cmd[0] == '/')
+	{
+		path = sub_parsing_cmd(split_cmd);
+		return (path);
+	}
+	env_path = find_path(env, split_cmd[0]);
+	i = 0;
+	while (env_path[i] && access(env_path[i], F_OK | R_OK | X_OK) == -1)
+		i++;
+	if (!env_path[i])
+		ft_printf("Error: %s: Command not found\n", split_cmd[0]);
+	else
+		path = ft_strdup(env_path[i]);
+	free_tab(split_cmd);
+	free_tab(env_path);
 	return (path);
 }

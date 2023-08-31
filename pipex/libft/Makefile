@@ -6,7 +6,7 @@
 #    By: yachen <yachen@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/03 17:32:38 by yachen            #+#    #+#              #
-#    Updated: 2023/08/19 11:42:38 by yachen           ###   ########.fr        #
+#    Updated: 2023/08/31 14:59:19 by yachen           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,19 +36,23 @@ OBJ_BONUS = $(BONUS_SRC:.c=.o)
 all: $(NAME)
 
 bonus: $(OBJ) $(OBJ_BONUS)
-	ar rcs $(NAME) $(OBJ) $(OBJ_BONUS)
+	@ar rcs $(NAME) $(OBJ) $(OBJ_BONUS)
 
 $(NAME): $(OBJ)
-	ar rcs $(NAME) $(OBJ)
+	@echo "\033[33mCompiling Libft---------------"
+	@ar rcs $(NAME) $(OBJ)
+	@echo "\033[33m----Libft created with success"
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	$(RM) $(OBJ) $(OBJ_BONUS)
+	@echo "\033[33mCleaning Libft----"
+	@$(RM) $(OBJ) $(OBJ_BONUS)
+	@echo "\033[33m-----Libft Cleaned"
 
 fclean: clean
-	$(RM) $(NAME)
+	@$(RM) $(NAME)
 
 re: fclean all
 

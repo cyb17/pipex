@@ -6,7 +6,7 @@
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 11:02:07 by yachen            #+#    #+#             */
-/*   Updated: 2023/08/30 16:37:09 by yachen           ###   ########.fr       */
+/*   Updated: 2023/08/31 15:28:13 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,15 @@
 
 void	cls_fd(int *fd);
 void	ft_perror(char *str);
+void	fork_error(int *pipefd, int *fd);
 int		tab_strjoin(char **tab, char *str);
 char	**make_cmd(char *str);
 char	**find_path(char **env, char *cmd);
-char	*find_execute_path(char **env, char **cmd);
+char	*parsing_cmd(char **env, char *cmd);
 void	execute_cmd(char *path, char **cmd, int *fd);
 void	open_fd(int *fd, char *infile, char *outfile);
-void	sub_child1(int *fd, int *pipefd, char **env, char *cmd_str);
-void	sub_child2(int *fd, int *pipefd, char **env, char *cmd_str);
-void	child_process(char **env, char **argv);
+void	child1(int *fd, int *pipefd, char **env, char *cmd_str);
+void	child2(int *fd, int *pipefd, char **env, char *cmd_str);
+void	processus(int *pipefd, int *fd, char **env, char**argv);
 
 #endif
