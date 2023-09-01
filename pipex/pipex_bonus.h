@@ -6,7 +6,7 @@
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 15:28:34 by yachen            #+#    #+#             */
-/*   Updated: 2023/08/31 18:16:45 by yachen           ###   ########.fr       */
+/*   Updated: 2023/09/01 10:47:15 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 
 void	clear_pipefd(int *fd, int pipefd[][2], int nb_pipe);
 void	wait_proces(int *pid, int nb_proces);
-void	child_processus(int *intput, int *output, char **env, char *argv_value);
-pid_t	proces(int *intput, int *output, char **env, char *argv_value);
+void	child_processus(int *input, int *output, char **env, char *argv_value);
+pid_t	proces(int *input, int *output, char **env, char *argv_value);
 
 #endif

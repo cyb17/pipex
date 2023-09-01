@@ -6,7 +6,7 @@
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:14:45 by yachen            #+#    #+#             */
-/*   Updated: 2023/08/31 15:27:04 by yachen           ###   ########.fr       */
+/*   Updated: 2023/09/01 10:06:14 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	child1(int *fd, int *pipefd, char **env, char *cmd_str)
 	{
 		cls_fd(fd);
 		cls_fd(pipefd);
-		ft_perror("dup2");
+		ft_perror("dup2", 1);
 	}
 	cls_fd(pipefd);
 	cls_fd(fd);
@@ -52,7 +52,7 @@ void	child2(int *fd, int *pipefd, char **env, char *cmd_str)
 	{
 		cls_fd(fd);
 		cls_fd(pipefd);
-		ft_perror("dup2");
+		ft_perror("dup2", 1);
 	}
 	cls_fd(pipefd);
 	cls_fd(fd);
@@ -100,7 +100,7 @@ int	main(int argc, char **argv, char **env)
 	{
 		open_fd(fd, argv[1], argv[4]);
 		if ((pipe(pipefd)) == -1)
-			ft_perror("pipe");
+			ft_perror("pipe", 1);
 		processus(pipefd, fd, env, argv);
 	}
 	else
