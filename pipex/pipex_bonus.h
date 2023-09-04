@@ -6,7 +6,7 @@
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 15:28:34 by yachen            #+#    #+#             */
-/*   Updated: 2023/09/01 10:47:15 by yachen           ###   ########.fr       */
+/*   Updated: 2023/09/04 16:53:30 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,13 @@
 # include "./libft/libft.h"
 # include "pipex.h"
 
-void	clear_pipefd(int *fd, int pipefd[][2], int nb_pipe);
+void	clear_pipe_and_fd(int *fd, int pipefd[][2], int nb_pipe);
 void	wait_proces(int *pid, int nb_proces);
-void	child_processus(int *input, int *output, char **env, char *argv_value);
-pid_t	proces(int *input, int *output, char **env, char *argv_value);
+int		ft_compare(char *limiter, char *str);
+int		ft_here_doc(char *limiter);
+void	open_fd_bonus(int *fd, char **argv, char *outfile, int *argc);
+void	child_procs(int *input, int *output, char **env, char *argv_value);
+pid_t	procs_fd(int *input, int *output, char **env, char *argv_value);
+pid_t	procs_pipe(int *p_in, int *p_out, char **env, char *argv_value);
 
 #endif

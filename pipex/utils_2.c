@@ -6,7 +6,7 @@
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 10:27:04 by yachen            #+#    #+#             */
-/*   Updated: 2023/09/01 10:06:44 by yachen           ###   ########.fr       */
+/*   Updated: 2023/09/04 10:57:07 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void	fork_error(int *pipefd, int *fd)
 	ft_perror("fork", 1);
 }
 
-/* open infile and outfile, EXIT_FAILURE if file can't be opened */
 void	open_fd(int *fd, char *infile, char *outfile)
 {
 	fd[0] = open(infile, O_RDONLY);

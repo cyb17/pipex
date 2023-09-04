@@ -6,7 +6,7 @@
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:13:38 by yachen            #+#    #+#             */
-/*   Updated: 2023/08/31 12:29:22 by yachen           ###   ########.fr       */
+/*   Updated: 2023/09/04 11:12:32 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ static char	*sub_parsing_cmd(char **split_cmd)
 }
 
 /* check cmd and find it path, return NULL if there is a pb */
-char	*parsing_cmd(char **env, char *cmd)
+char	*parsing_cmd(char **env_main, char *cmd, char **env_exev)
 {
 	char	**split_cmd;
 	char	**env_path;
@@ -107,7 +107,9 @@ char	*parsing_cmd(char **env, char *cmd)
 		path = sub_parsing_cmd(split_cmd);
 		return (path);
 	}
-	env_path = find_path(env, split_cmd[0]);
+	env_path = find_path(env_main, split_cmd[0]);
+	if (!env_path)
+		env_path = find_path(env_exev, split_cmd[0]);
 	i = 0;
 	while (env_path[i] && access(env_path[i], F_OK | R_OK | X_OK) == -1)
 		i++;

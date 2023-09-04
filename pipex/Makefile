@@ -6,7 +6,7 @@
 #    By: yachen <yachen@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/13 10:56:05 by yachen            #+#    #+#              #
-#    Updated: 2023/08/31 17:10:15 by yachen           ###   ########.fr        #
+#    Updated: 2023/09/04 10:56:17 by yachen           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ RM = rm -rf
 
 SRC = pipex.c utils_1.c utils_2.c \
 
-SRC_B = pipex_bonus.c utils_1.c utils_2.c \
+SRC_B = pipex_bonus.c utils_1.c utils_2.c utils_bonus.c \
 
 OBJ = $(SRC:.c=.o)
 

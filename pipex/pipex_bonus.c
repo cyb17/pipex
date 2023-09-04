@@ -6,18 +6,20 @@
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 15:25:37 by yachen            #+#    #+#             */
-/*   Updated: 2023/09/01 11:51:47 by yachen           ###   ########.fr       */
+/*   Updated: 2023/09/04 16:58:49 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-void	child_processus(int *input, int *output, char **env, char *argv_value)
+void	child_procs(int *input, int *output, char **env, char *argv_value)
 {
 	char	*path;
 	char	**cmd;
+	char	*env_exev[] = {"PATH=/mnt/nfs/homes/yachen/bin:/usr/local/sbin:\
+	/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin", NULL};
 
-	path = parsing_cmd(env, argv_value);
+	path = parsing_cmd(env, argv_value, env_exev);
 	if (!path)
 		return ;
 	if (dup2(input[0], STDIN_FILENO) < 0 || dup2(output[1], STDOUT_FILENO) < 0)
@@ -37,7 +39,7 @@ void	child_processus(int *input, int *output, char **env, char *argv_value)
 	}
 }
 
-pid_t	proces(int *input, int *output, char **env, char *argv_value)
+pid_t	procs_fd(int *input, int *output, char **env, char *argv_value)
 {
 	pid_t	pid;
 	
@@ -48,37 +50,30 @@ pid_t	proces(int *input, int *output, char **env, char *argv_value)
 		return (0);
 	}
 	else if (pid == 0)
-		child_processus(input, output, env, argv_value);
+		child_procs(input, output, env, argv_value);
 	else
 		return (pid);
 	return (0);
 }
 
-void	clear_pipe_and_fd(int *fd, int pipefd[][2], int nb_pipe)
+pid_t	procs_pipe(int *p_in, int *p_out, char **env, char *argv_value)
 {
-	int	i;
+	pid_t	pid;
 	
-	i = 0;
-	while (i < nb_pipe)
+	pid = fork();
+	if (pid == -1)
 	{
-		printf("close pipefd : %d\n", i);
-		cls_fd(pipefd[i++]);
+		perror("Error : fork");
+		return (0);
 	}
-	cls_fd(fd);
-}
-
-void	wait_proces(int *pid, int nb_proces)
-{
-	int	i;
-	int	status;
-	
-	i = 0;
-	while (i < nb_proces)
+	else if (pid == 0)
+		child_procs(p_in, p_out, env, argv_value);
+	else
 	{
-		printf("pid : %d\n", pid[i]);
-		waitpid(pid[i], &status, 0);
-		i++;
+		close(p_in[1]);
+		return (pid);
 	}
+	return (0);
 }
 
 int	main(int argc, char **argv, char **env)
@@ -90,22 +85,19 @@ int	main(int argc, char **argv, char **env)
 	
 	if (argc < 5)
 		ft_perror("The number of parameters is not valid\n", 0);
-	open_fd(fd, argv[1], argv[argc - 1]);
+	open_fd_bonus(fd, argv, argv[argc - 1], &argc);
 	i = 0;
-	argv = argv + 2;
+	printf("%s\n", *argv);
 	while (i < argc - 3)
 	{
 		if (i < argc - 4)
-		{
-			printf("pipe : %d\n", i);
 			pipe(pipefd[i]);
-		}
 		if (i == 0)
-			pid[i] = proces(fd, pipefd[i], env, *(argv++));
+			pid[i] = procs_fd(fd, pipefd[i], env, *argv++);
 		else if (i > 0 && i < argc - 4)
-			pid[i] = proces(pipefd[i - 1], pipefd[i], env, *(argv++));
+			pid[i] = procs_pipe(pipefd[i - 1], pipefd[i], env, *argv++);
 		else
-			pid[i] = proces(pipefd[i - 1], fd, env, *(argv++));
+			pid[i] = procs_fd(pipefd[i - 1], fd, env, *argv++);
 		i++;
 	}
 	clear_pipe_and_fd(fd, pipefd, argc - 4);
