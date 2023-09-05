@@ -6,7 +6,7 @@
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 15:25:37 by yachen            #+#    #+#             */
-/*   Updated: 2023/09/04 16:58:49 by yachen           ###   ########.fr       */
+/*   Updated: 2023/09/05 16:38:00 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	child_procs(int *input, int *output, char **env, char *argv_value)
 	path = parsing_cmd(env, argv_value, env_exev);
 	if (!path)
 		return ;
-	if (dup2(input[0], STDIN_FILENO) < 0 || dup2(output[1], STDOUT_FILENO) < 0)
+	if (dup2(input[0], STDIN_FILENO) || dup2(output[1], STDOUT_FILENO) < 0)
 	{
 		cls_fd(input);
 		cls_fd(output);
@@ -76,6 +76,16 @@ pid_t	procs_pipe(int *p_in, int *p_out, char **env, char *argv_value)
 	return (0);
 }
 
+static int	creat_pipefd(int i, int argc, int pipefd[][2])
+{
+	if (i < argc - 4)
+	{
+		if ((pipe(pipefd[i])) < 0)
+			return (-1);
+	}
+	return (0);
+}
+
 int	main(int argc, char **argv, char **env)
 {
 	int		pipefd[argc - 4][2];
@@ -85,13 +95,12 @@ int	main(int argc, char **argv, char **env)
 	
 	if (argc < 5)
 		ft_perror("The number of parameters is not valid\n", 0);
-	open_fd_bonus(fd, argv, argv[argc - 1], &argc);
+	open_fd_bonus(fd, &argv, argv[argc - 1], &argc);
 	i = 0;
-	printf("%s\n", *argv);
 	while (i < argc - 3)
 	{
-		if (i < argc - 4)
-			pipe(pipefd[i]);
+		if (creat_pipefd(i, argc, pipefd) == -1)
+			break ;
 		if (i == 0)
 			pid[i] = procs_fd(fd, pipefd[i], env, *argv++);
 		else if (i > 0 && i < argc - 4)
@@ -100,7 +109,7 @@ int	main(int argc, char **argv, char **env)
 			pid[i] = procs_fd(pipefd[i - 1], fd, env, *argv++);
 		i++;
 	}
-	clear_pipe_and_fd(fd, pipefd, argc - 4);
-	wait_proces(pid, argc - 3);
+	clear_pipe_and_fd(i, fd, pipefd, argc - 4);
+	wait_proces(i, pid, argc - 3);
 	return (0);
 }
