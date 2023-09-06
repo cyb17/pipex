@@ -6,21 +6,11 @@
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 10:55:26 by yachen            #+#    #+#             */
-/*   Updated: 2023/09/05 16:43:26 by yachen           ###   ########.fr       */
+/*   Updated: 2023/09/06 14:20:21 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-void	clear_pipe_and_fd(int j, int *fd, int pipefd[][2], int nb_pipe)
-{
-	int	i;
-	
-	i = 0;
-	while (i < nb_pipe && i < j)
-		cls_fd(pipefd[i++]);
-	cls_fd(fd);
-}
 
 void	wait_proces(int j, int *pid, int nb_proces)
 {
@@ -48,50 +38,60 @@ int	ft_compare(char *limiter, char *str)
 	return (0);
 }
 
-int	ft_here_doc(char *limiter)
+void	ft_here_doc(char *limiter)
 {
 	char	*line;
+	int		here_doc;
 
-	line = NULL;
+	here_doc = open("/tmp/here_doc", O_CREAT | O_RDWR, 0644);
+	if (here_doc == -1)
+		ft_perror("here_doc", 1);
 	while (1)
 	{
 		ft_putstr_fd("> ", 1);
 		line = get_next_line(STDIN_FILENO);
+		if (!line)
+		{
+			close(here_doc);
+			ft_perror("here_doc", 0);
+		}
+		write(here_doc, line, ft_strlen(line) + 1);
 		if (ft_compare(limiter, line) == 1)
 		{
+			close(here_doc);
 			free(line);
 			break;
 		}
 		free(line);
+		close(here_doc);
 	}
-	return (STDIN_FILENO);
 }
 
-int	open_fd_bonus(int fd[], char ***argv, char *outfile, int *argc)
+void	open_fd_bonus(int fd[], char ***argv, char *outfile, int *argc)
 {
-
-	if (ft_strcmp("here_doc", argv[0][1]))
+	char	*infile;
+	int		indice;
+	
+	infile = argv[0][1];
+	indice = ft_strcmp("here_doc", argv[0][1]);
+	if (indice == 1)
 	{
-		fd[0] = ft_here_doc(argv[0][2]);
+		ft_here_doc(argv[0][2]);
+		infile = "/tmp/here_doc";
 		fd[1] = open(outfile, O_CREAT | O_RDWR , 0644);
-		if (fd[1] == -1)
-		{
-			close(fd[0]);
-			ft_perror(outfile, 1);
-		}
-		(*argc)--;
-		*argv = *argv + 3;
-		return (1);
 	}
-	fd[0] = open(argv[0][1], O_RDONLY);
-	if (fd[0] == -1)
-		ft_perror(argv[0][1], 1);
-	fd[1] = open(outfile, O_CREAT | O_RDWR | O_TRUNC, 0644);
+	else
+		fd[1] = open(outfile, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd[1] == -1)
-	{
-		close(fd[0]);
 		ft_perror(outfile, 1);
+	fd[0] = open(infile, O_RDONLY);
+	if (fd[0] == -1)
+	{
+		close(fd[1]);
+		ft_perror(infile, 1);
 	}
-	*argv = *argv + 2;
-	return (0);
+	if (indice == 0)
+		return ;
+	*argv = *argv + 1;
+	(*argc)--;
 }

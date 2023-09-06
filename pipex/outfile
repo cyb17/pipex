@@ -1,17 +1,1 @@
-total 112
--rwxr-xr-x 1 yachen 2023_paris    32 Sep  4 11:20 infile
-drwxr-xr-x 2 yachen 2023_paris  4096 Sep  5 11:06 libft
--rw-r--r-- 1 yachen 2023_paris  2289 Sep  4 10:56 Makefile
--rwxr-xr-x 1 yachen 2023_paris     0 Sep  5 14:46 outfile
--rwxr-xr-x 1 yachen 2023_paris 33496 Sep  5 14:42 pipex_bonus
--rw-r--r-- 1 yachen 2023_paris  2738 Sep  5 14:44 pipex_bonus.c
--rw-r--r-- 1 yachen 2023_paris  1549 Sep  5 11:04 pipex_bonus.h
--rw-r--r-- 1 yachen 2023_paris 10096 Sep  5 14:42 pipex_bonus.o
--rw-r--r-- 1 yachen 2023_paris  3056 Sep  4 11:10 pipex.c
--rw-r--r-- 1 yachen 2023_paris  1607 Sep  4 11:09 pipex.h
--rw-r--r-- 1 yachen 2023_paris  3050 Sep  4 11:12 utils_1.c
--rw-r--r-- 1 yachen 2023_paris  7208 Sep  5 11:06 utils_1.o
--rw-r--r-- 1 yachen 2023_paris  1456 Sep  4 10:57 utils_2.c
--rw-r--r-- 1 yachen 2023_paris  5136 Sep  5 11:06 utils_2.o
--rw-r--r-- 1 yachen 2023_paris  2211 Sep  5 11:34 utils_bonus.c
--rw-r--r-- 1 yachen 2023_paris  6824 Sep  5 12:21 utils_bonus.o
+16

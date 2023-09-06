@@ -6,7 +6,7 @@
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:13:38 by yachen            #+#    #+#             */
-/*   Updated: 2023/09/04 11:12:32 by yachen           ###   ########.fr       */
+/*   Updated: 2023/09/06 11:31:26 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,14 @@ char	**make_cmd(char *str)
 	if (!str)
 		return (NULL);
 	cmd = ft_split(str, ' ');
-	if (cmd[0] == NULL)
+	if ((cmd[0] == NULL) || !cmd)
 	{
-		free_tab(cmd);
-		ft_printf("Error: %s: Command not found\n", str);
-		exit(EXIT_FAILURE);
+		if (cmd)
+		{
+			free(cmd);
+			ft_printf("Error : %s: Command not found\n", str);
+		}
+		return (NULL);
 	}
 	return (cmd);
 }
@@ -83,6 +86,8 @@ static char	*sub_parsing_cmd(char **split_cmd)
 {
 	char	*path;
 
+	if (!split_cmd)
+		return (NULL);
 	path = NULL;
 	if (access(split_cmd[0], F_OK | R_OK | X_OK) == -1)
 		ft_printf("Error: %s: no such file or directory\n", split_cmd[0]);
