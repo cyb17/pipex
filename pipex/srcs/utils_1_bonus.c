@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_bonus.c                                      :+:      :+:    :+:   */
+/*   utils_1_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 10:55:26 by yachen            #+#    #+#             */
-/*   Updated: 2023/09/06 14:20:21 by yachen           ###   ########.fr       */
+/*   Updated: 2023/09/08 17:06:48 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../includes/pipex_bonus.h"
 
 void	wait_proces(int j, int *pid, int nb_proces)
 {
 	int	i;
 	int	status;
-	
+
 	i = 0;
 	while (i < nb_proces && i < j)
 		waitpid(pid[i++], &status, 0);
@@ -60,7 +60,7 @@ void	ft_here_doc(char *limiter)
 		{
 			close(here_doc);
 			free(line);
-			break;
+			break ;
 		}
 		free(line);
 		close(here_doc);
@@ -71,14 +71,14 @@ void	open_fd_bonus(int fd[], char ***argv, char *outfile, int *argc)
 {
 	char	*infile;
 	int		indice;
-	
+
 	infile = argv[0][1];
 	indice = ft_strcmp("here_doc", argv[0][1]);
 	if (indice == 1)
 	{
 		ft_here_doc(argv[0][2]);
 		infile = "/tmp/here_doc";
-		fd[1] = open(outfile, O_CREAT | O_RDWR , 0644);
+		fd[1] = open(outfile, O_CREAT | O_RDWR, 0644);
 	}
 	else
 		fd[1] = open(outfile, O_CREAT | O_RDWR | O_TRUNC, 0644);
@@ -94,4 +94,18 @@ void	open_fd_bonus(int fd[], char ***argv, char *outfile, int *argc)
 		return ;
 	*argv = *argv + 1;
 	(*argc)--;
+}
+
+int	creat_pipefd(int i, int argc, int **pipefd)
+{
+	if (i < argc - 4)
+	{
+		if ((pipe(pipefd[i])) < 0)
+		{
+			if (i != 0)
+				close(pipefd[i - 1][0]);
+			return (-1);
+		}
+	}
+	return (0);
 }

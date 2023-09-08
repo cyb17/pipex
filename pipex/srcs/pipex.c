@@ -6,11 +6,11 @@
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:14:45 by yachen            #+#    #+#             */
-/*   Updated: 2023/09/04 11:10:42 by yachen           ###   ########.fr       */
+/*   Updated: 2023/09/08 13:52:39 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../includes/pipex.h"
 
 /* -parse command, EXIT_FAILURE if command is "" or "  " 
 -redirect input and output, EXIT_FAILURE if error
@@ -19,54 +19,54 @@ void	child1(int *fd, int *pipefd, char **env, char *cmd_str)
 {
 	char	*path;
 	char	**cmd;
-	char	*env_exev[] = {"PATH=/mnt/nfs/homes/yachen/bin:/usr/local/sbin:\
-	/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin", NULL};
+	char	*env_exev[2];
 
+	env_exev[0] = "PATH=/mnt/nfs/homes/yachen/bin:/usr/local/sbin:\
+	/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin";
+	env_exev[1] = NULL;
 	path = parsing_cmd(env, cmd_str, env_exev);
-	if (!path)
-		return ;
-	if (dup2(fd[0], STDIN_FILENO) < 0 || dup2(pipefd[1], STDOUT_FILENO) < 0)
+	if (!path || dup2(fd[0], STDIN_FILENO) < 0
+		|| dup2(pipefd[1], STDOUT_FILENO) < 0)
 	{
 		cls_fd(fd);
 		cls_fd(pipefd);
-		ft_perror("dup2", 1);
+		if (path)
+			ft_perror("dup2", 1);
+		else
+			exit(EXIT_FAILURE);
 	}
 	cls_fd(pipefd);
 	cls_fd(fd);
 	cmd = make_cmd(cmd_str);
 	if (execve(path, cmd, NULL) == -1)
-	{
-		close(STDIN_FILENO);
-		close(STDOUT_FILENO);
-		perror("Error");
-	}
+		ft_perror("execve", 1);
 }
 
 void	child2(int *fd, int *pipefd, char **env, char *cmd_str)
 {
 	char	*path;
 	char	**cmd;
-	char	*env_exev[] = {"PATH=/mnt/nfs/homes/yachen/bin:/usr/local/sbin:\
-	/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin", NULL};
+	char	*env_exev[2];
 
+	env_exev[0] = "PATH=/mnt/nfs/homes/yachen/bin:/usr/local/sbin:\
+	/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin";
+	env_exev[1] = NULL;
 	path = parsing_cmd(env, cmd_str, env_exev);
-	if (!path)
-		return ;
-	if (dup2(pipefd[0], STDIN_FILENO) < 0 || dup2(fd[1], STDOUT_FILENO) < 0)
+	if (!path || dup2(pipefd[0], STDIN_FILENO) < 0
+		|| dup2(fd[1], STDOUT_FILENO) < 0)
 	{
 		cls_fd(fd);
 		cls_fd(pipefd);
-		ft_perror("dup2", 1);
+		if (path)
+			ft_perror("dup2", 1);
+		else
+			exit(EXIT_FAILURE);
 	}
 	cls_fd(pipefd);
 	cls_fd(fd);
 	cmd = make_cmd(cmd_str);
 	if (execve(path, cmd, NULL) == -1)
-	{
-		close(STDIN_FILENO);
-		close(STDOUT_FILENO);
-		perror("Error");
-	}
+		ft_perror("execve", 1);
 }
 
 /* creat 2 childs process and wait for them all */
@@ -104,7 +104,10 @@ int	main(int argc, char **argv, char **env)
 	{
 		open_fd(fd, argv[1], argv[4]);
 		if ((pipe(pipefd)) == -1)
+		{
+			cls_fd(fd);
 			ft_perror("pipe", 1);
+		}
 		processus(pipefd, fd, env, argv);
 	}
 	else

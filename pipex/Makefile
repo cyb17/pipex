@@ -6,7 +6,7 @@
 #    By: yachen <yachen@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/13 10:56:05 by yachen            #+#    #+#              #
-#    Updated: 2023/09/04 10:56:17 by yachen           ###   ########.fr        #
+#    Updated: 2023/09/08 16:20:05 by yachen           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,9 +20,10 @@ CFLAGS =  -Wall -Wextra -Werror -g
 
 RM = rm -rf
 
-SRC = pipex.c utils_1.c utils_2.c \
+SRC = ./srcs/pipex.c ./srcs/utils_1.c ./srcs/utils_2.c ./srcs/parsing_cmd.c \
 
-SRC_B = pipex_bonus.c utils_1.c utils_2.c utils_bonus.c \
+SRC_B = ./srcs/pipex_bonus.c ./srcs/utils_1.c ./srcs/utils_2.c ./srcs/utils_1_bonus.c \
+		./srcs/utils_2_bonus.c ./srcs/parsing_cmd.c\
 
 OBJ = $(SRC:.c=.o)
 
