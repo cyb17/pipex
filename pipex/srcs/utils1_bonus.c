@@ -1,26 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_1_bonus.c                                    :+:      :+:    :+:   */
+/*   utils1_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 10:55:26 by yachen            #+#    #+#             */
-/*   Updated: 2023/09/08 17:06:48 by yachen           ###   ########.fr       */
+/*   Updated: 2023/09/09 14:31:01 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex_bonus.h"
-
-void	wait_proces(int j, int *pid, int nb_proces)
-{
-	int	i;
-	int	status;
-
-	i = 0;
-	while (i < nb_proces && i < j)
-		waitpid(pid[i++], &status, 0);
-}
 
 int	ft_compare(char *limiter, char *str)
 {
@@ -67,7 +57,7 @@ void	ft_here_doc(char *limiter)
 	}
 }
 
-void	open_fd_bonus(int fd[], char ***argv, char *outfile, int *argc)
+void	open_fd_bonus(t_tab *tab, char ***argv, char *outfile, int *argc)
 {
 	char	*infile;
 	int		indice;
@@ -78,16 +68,16 @@ void	open_fd_bonus(int fd[], char ***argv, char *outfile, int *argc)
 	{
 		ft_here_doc(argv[0][2]);
 		infile = "/tmp/here_doc";
-		fd[1] = open(outfile, O_CREAT | O_RDWR, 0644);
+		tab->fdout = open(outfile, O_CREAT | O_RDWR | O_APPEND, 0644);
 	}
 	else
-		fd[1] = open(outfile, O_CREAT | O_RDWR | O_TRUNC, 0644);
-	if (fd[1] == -1)
+		tab->fdout = open(outfile, O_CREAT | O_RDWR | O_TRUNC, 0644);
+	if (tab->fdout == -1)
 		ft_perror(outfile, 1);
-	fd[0] = open(infile, O_RDONLY);
-	if (fd[0] == -1)
+	tab->fdin = open(infile, O_RDONLY);
+	if (tab->fdin == -1)
 	{
-		close(fd[1]);
+		close(tab->fdout);
 		ft_perror(infile, 1);
 	}
 	if (indice == 0)

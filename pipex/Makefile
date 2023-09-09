@@ -6,7 +6,7 @@
 #    By: yachen <yachen@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/13 10:56:05 by yachen            #+#    #+#              #
-#    Updated: 2023/09/08 16:20:05 by yachen           ###   ########.fr        #
+#    Updated: 2023/09/09 14:16:57 by yachen           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,8 +22,8 @@ RM = rm -rf
 
 SRC = ./srcs/pipex.c ./srcs/utils_1.c ./srcs/utils_2.c ./srcs/parsing_cmd.c \
 
-SRC_B = ./srcs/pipex_bonus.c ./srcs/utils_1.c ./srcs/utils_2.c ./srcs/utils_1_bonus.c \
-		./srcs/utils_2_bonus.c ./srcs/parsing_cmd.c\
+SRC_B = ./srcs/pipex_bonus.c ./srcs/utils_1.c ./srcs/utils_2.c ./srcs/utils1_bonus.c \
+		./srcs/utils2_bonus.c ./srcs/parsing_cmd.c ./srcs/fork_case_bonus.c ./srcs/child_procs_step_bonus.c\
 
 OBJ = $(SRC:.c=.o)
 
