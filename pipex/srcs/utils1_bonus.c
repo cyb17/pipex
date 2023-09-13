@@ -6,7 +6,7 @@
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 10:55:26 by yachen            #+#    #+#             */
-/*   Updated: 2023/09/09 14:31:01 by yachen           ###   ########.fr       */
+/*   Updated: 2023/09/13 12:35:31 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	ft_here_doc(char *limiter)
 	char	*line;
 	int		here_doc;
 
-	here_doc = open("/tmp/here_doc", O_CREAT | O_RDWR, 0644);
+	here_doc = open("/tmp/here_doc", O_CREAT | O_RDWR | O_APPEND, 0644);
 	if (here_doc == -1)
 		ft_perror("here_doc", 1);
 	while (1)
@@ -53,7 +53,6 @@ void	ft_here_doc(char *limiter)
 			break ;
 		}
 		free(line);
-		close(here_doc);
 	}
 }
 
@@ -64,7 +63,7 @@ void	open_fd_bonus(t_tab *tab, char ***argv, char *outfile, int *argc)
 
 	infile = argv[0][1];
 	indice = ft_strcmp("here_doc", argv[0][1]);
-	if (indice == 1)
+	if (indice == 1 && *argc >= 6)
 	{
 		ft_here_doc(argv[0][2]);
 		infile = "/tmp/here_doc";
@@ -77,8 +76,8 @@ void	open_fd_bonus(t_tab *tab, char ***argv, char *outfile, int *argc)
 	tab->fdin = open(infile, O_RDONLY);
 	if (tab->fdin == -1)
 	{
-		close(tab->fdout);
-		ft_perror(infile, 1);
+		ft_printf("Error : %s : No such file or directory\n", infile);
+		create_tmpinfile(&tab->fdin);
 	}
 	if (indice == 0)
 		return ;

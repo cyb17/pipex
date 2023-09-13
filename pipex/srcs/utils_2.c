@@ -6,7 +6,7 @@
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 10:27:04 by yachen            #+#    #+#             */
-/*   Updated: 2023/09/08 11:27:44 by yachen           ###   ########.fr       */
+/*   Updated: 2023/09/13 12:26:23 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,21 @@ void	fork_error(int *pipefd, int *fd)
 	ft_perror("fork", 1);
 }
 
+void	create_tmpinfile(int *fd)
+{
+	fd[0] = open("/tmp/tmpinfile", O_CREAT | O_RDONLY, 0644);
+	if (fd[0] == -1)
+		ft_perror("tmpinfile", 1);
+}
+
 void	open_fd(int *fd, char *infile, char *outfile)
 {
 	fd[0] = open(infile, O_RDONLY);
 	if (fd[0] == -1)
-		ft_perror(infile, 1);
+	{
+		perror("Error : ");
+		create_tmpinfile(fd);
+	}
 	fd[1] = open(outfile, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd[1] == -1)
 	{

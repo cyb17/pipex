@@ -6,7 +6,7 @@
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 10:45:02 by yachen            #+#    #+#             */
-/*   Updated: 2023/09/08 16:07:42 by yachen           ###   ########.fr       */
+/*   Updated: 2023/09/13 12:14:35 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 void	cls_fd(int *fd);
 void	ft_perror(char *str, int indice);
 void	fork_error(int *pipefd, int *fd);
+void	create_tmpinfile(int *fdin);
 void	open_fd(int *fd, char *infile, char *outfile);
 
 // utils_1

@@ -6,11 +6,21 @@
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 10:39:32 by yachen            #+#    #+#             */
-/*   Updated: 2023/09/09 14:17:07 by yachen           ###   ########.fr       */
+/*   Updated: 2023/09/11 10:05:38 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex_bonus.h"
+
+static void	sub_main(t_tab *tab)
+{
+	free_tab_int(tab);
+	if (access("/tmp/here_doc", F_OK) == 0)
+	{
+		if (unlink("/tmp/here_doc") == -1)
+			ft_perror("unlink", 1);
+	}
+}
 
 int	main(int argc, char **argv, char **env)
 {
@@ -36,6 +46,6 @@ int	main(int argc, char **argv, char **env)
 		i++;
 	}
 	wait_proces(i, tab.pid, argc - 3);
-	free_tab_int(&tab);
+	sub_main(&tab);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:14:45 by yachen            #+#    #+#             */
-/*   Updated: 2023/09/09 14:46:54 by yachen           ###   ########.fr       */
+/*   Updated: 2023/09/13 12:21:49 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,11 @@ int	main(int argc, char **argv, char **env)
 			ft_perror("pipe", 1);
 		}
 		processus(pipefd, fd, env, argv);
+		if (access("/tmp/tmpinfile", F_OK) == 0)
+		{
+			if (unlink("/tmp/tmpinfile") == -1)
+				ft_perror("unlink", 1);
+		}
 	}
 	else
 		ft_printf("The number of parameters is not valid\n");
