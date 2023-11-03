@@ -6,7 +6,7 @@
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 10:45:02 by yachen            #+#    #+#             */
-/*   Updated: 2023/09/13 12:14:35 by yachen           ###   ########.fr       */
+/*   Updated: 2023/11/03 16:01:37 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <stdio.h>
 # include <sys/wait.h>
 # include <sys/types.h>
-# include "../libft/libft.h"
+# include "../../libft/libft.h"
 
 // utils_2
 void	cls_fd(int *fd);

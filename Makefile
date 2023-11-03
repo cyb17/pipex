@@ -6,7 +6,7 @@
 #    By: yachen <yachen@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/13 10:56:05 by yachen            #+#    #+#              #
-#    Updated: 2023/09/09 14:16:57 by yachen           ###   ########.fr        #
+#    Updated: 2023/11/03 16:58:08 by yachen           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,10 +20,12 @@ CFLAGS =  -Wall -Wextra -Werror -g
 
 RM = rm -rf
 
-SRC = ./srcs/pipex.c ./srcs/utils_1.c ./srcs/utils_2.c ./srcs/parsing_cmd.c \
+SRC = pipex_dir/srcs/pipex.c pipex_dir/srcs/utils_1.c pipex_dir/srcs/utils_2.c pipex_dir/srcs/parsing_cmd.c \
 
-SRC_B = ./srcs/pipex_bonus.c ./srcs/utils_1.c ./srcs/utils_2.c ./srcs/utils1_bonus.c \
-		./srcs/utils2_bonus.c ./srcs/parsing_cmd.c ./srcs/fork_case_bonus.c ./srcs/child_procs_step_bonus.c\
+SRC_B = pipex_bonus_dir/srcs/redirection_bonus.c pipex_bonus_dir/srcs/initialization_bonus.c \
+		pipex_bonus_dir/srcs/find_path_bonus.c pipex_bonus_dir/srcs/utils_bonus.c \
+		pipex_bonus_dir/srcs/parsing_cmd_bonus.c pipex_bonus_dir/srcs/child_procs_step_bonus.c \
+		pipex_bonus_dir/srcs/fork_case_bonus.c pipex_bonus_dir/srcs/pipex_bonus.c \
 
 OBJ = $(SRC:.c=.o)
 

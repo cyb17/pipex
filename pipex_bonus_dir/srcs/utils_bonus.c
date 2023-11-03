@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils2_bonus.c                                     :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 12:02:53 by yachen            #+#    #+#             */
-/*   Updated: 2023/09/09 14:17:23 by yachen           ###   ########.fr       */
+/*   Updated: 2023/11/03 16:52:55 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,31 +29,13 @@ void	free_tab_int(t_tab *tab)
 		free(tab->pipefd);
 }
 
-void	ft_init_tab(t_tab *tab, int argc)
+void	ft_perror(char *str, int indice)
 {
-	int	i;
-
-	i = 0;
-	tab->nb_pipe = argc - 4;
-	tab->pid = (int *)malloc(sizeof(int) * (argc - 3));
-	if (!(tab->pid))
-		ft_perror("Error : tab_pid\n", 0);
-	tab->pipefd = (int **)malloc(sizeof(int *) * (argc - 4));
-	if (!(tab->pipefd))
-	{
-		free(tab->pid);
-		ft_perror("Error : tab_pipefd\n", 0);
-	}
-	while (i < argc -4)
-	{
-		tab->pipefd[i] = (int *)malloc(sizeof(int) * 2);
-		if (!(tab->pipefd[i]))
-		{
-			free_tab_int(tab);
-			ft_perror("Error : tab_pipefd\n", 0);
-		}
-		i++;
-	}
+	if (indice == 1)
+		perror("Error");
+	if (str)
+		ft_printf(": %s\n", str);
+	exit(EXIT_FAILURE);
 }
 
 void	close_pipefd(int **pipefd, int nb_pipe, int i)
@@ -62,7 +44,11 @@ void	close_pipefd(int **pipefd, int nb_pipe, int i)
 
 	j = 0;
 	while (j <= i && j < nb_pipe)
-		cls_fd(pipefd[j++]);
+	{
+		close(pipefd[j][0]);
+		close(pipefd[j][1]);
+		j++;
+	}
 }
 
 void	clean_all(t_tab *tab, int i, int indice)

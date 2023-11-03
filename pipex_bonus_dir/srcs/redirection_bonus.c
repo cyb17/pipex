@@ -6,7 +6,7 @@
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 10:55:26 by yachen            #+#    #+#             */
-/*   Updated: 2023/09/13 12:35:31 by yachen           ###   ########.fr       */
+/*   Updated: 2023/11/03 16:34:34 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,13 @@ int	ft_compare(char *limiter, char *str)
 	if (limiter[i] == '\0' && str[i] == '\n')
 		return (1);
 	return (0);
+}
+
+void	create_tmpinfile(int *fd)
+{
+	fd[0] = open("/tmp/tmpinfile", O_CREAT | O_RDONLY, 0644);
+	if (fd[0] == -1)
+		ft_perror("tmpinfile", 1);
 }
 
 void	ft_here_doc(char *limiter)
@@ -83,18 +90,4 @@ void	open_fd_bonus(t_tab *tab, char ***argv, char *outfile, int *argc)
 		return ;
 	*argv = *argv + 1;
 	(*argc)--;
-}
-
-int	creat_pipefd(int i, int argc, int **pipefd)
-{
-	if (i < argc - 4)
-	{
-		if ((pipe(pipefd[i])) < 0)
-		{
-			if (i != 0)
-				close(pipefd[i - 1][0]);
-			return (-1);
-		}
-	}
-	return (0);
 }

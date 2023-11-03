@@ -6,7 +6,7 @@
 /*   By: yachen <yachen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 15:28:34 by yachen            #+#    #+#             */
-/*   Updated: 2023/09/09 14:18:20 by yachen           ###   ########.fr       */
+/*   Updated: 2023/11/03 16:52:27 by yachen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@
 # include <stdio.h>
 # include <sys/wait.h>
 # include <sys/types.h>
-# include "../libft/libft.h"
-# include "../includes/pipex.h"
+# include "../../libft/libft.h"
 
 typedef struct s_tab
 {
@@ -29,18 +28,32 @@ typedef struct s_tab
 	int		nb_pipe;
 }			t_tab;
 
-// utils1_bonus
+// redirection
 int		ft_compare(char *limiter, char *str);
+void	create_tmpinfile(int *fdin);
 void	ft_here_doc(char *limiter);
 void	open_fd_bonus(t_tab *tab, char ***argv, char *outfile, int *argc);
+
+// initialization
+void	ft_init_tab(t_tab *tab, int argc);
 int		creat_pipefd(int i, int argc, int **pipefd);
 
-// utils2_bonus
-void	ft_init_tab(t_tab *tab, int argc);
+// find_path
+char	**find_path(char **env, char *cmd);
+
+// utils
+void	ft_perror(char *str, int indice);
 void	free_tab_int(t_tab *tab);
 void	close_pipefd(int **pipefd, int nb_pipe, int i);
 void	clean_all(t_tab *tab, int i, int indice);
 void	wait_proces(int j, int *pid, int nb_proces);
+
+// parsing_cmd
+char	**make_cmd(char *str);
+int		check_cmd(char *cmd);
+char	*sub_parsing_cmd1(char **split_cmd);
+char	*sub_parsing_cmd2(char **env_main, char **env_exev, char *cmd);
+char	*parsing_cmd(char **env_main, char *cmd, char **env_exev);
 
 // child_procs_step
 char	*child_procs_part_1(int i, t_tab *tab, char **env, char *argv_value);
